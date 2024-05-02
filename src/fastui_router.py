@@ -18,8 +18,9 @@ from src.pages.pages import zeropage
 from src.config import settings
 from src.pages.pages import create_page
 from src.pages.pages import zeropage
-from src.cards.schemas import CardsSchemaIn
+from src.cards.schemas import CardsSchemaIn, CardsSchema
 from src.pages.pages import go_back
+from src.courses.models import CardsOrm
 
 
 router = APIRouter(prefix='/api')
@@ -28,6 +29,10 @@ router = APIRouter(prefix='/api')
 async def lists_of_course(search: str = '', search_in='all'):
     res = await AsyncORM.select_data(CoursesOrm, search, search_in)
     return [CourseSchema(**i.to_dict()) for i in res]
+
+async def lists_of_cards(course_id: int):
+    res = await AsyncORM.select_cards(course_id, CardsOrm)
+    return [CardsSchema(**i.to_dict()) for i in res]
 
 
 async def lists_of_course_by_cat(search: str = '', search_in='all'):
@@ -67,6 +72,25 @@ async def draw_courses_page() -> list[AnyComponent]:
                 ]),
         c.Button(text='Добавить новый курс', on_click=GoToEvent(url='/course/add/')))
 
+
+@router.get("/course/{course_id}/cards/", response_model=FastUI, response_model_exclude_none=True)
+async def draw_cards_page(course_id: int) -> list[AnyComponent]:
+    bd = await lists_of_cards(course_id)
+    return create_page(
+        go_back,
+        c.Heading(text=f'Карточки курса: {course_id}', level=2),   #заменить на имя
+        c.Table(data=bd,
+                columns=[
+                    DisplayLookup(field='name', table_width_percent=33,
+                                  on_click=GoToEvent(url=f'/course/{course_id}/cards/' + '{id}/')),
+                    DisplayLookup(field='lang_a', table_width_percent=33),
+                    DisplayLookup(field='lang_b', table_width_percent=33),
+                    # DisplayLookup(field='active', table_width_percent=33),
+                    DisplayLookup(field='user_admin', table_width_percent=33),
+                    # DisplayLookup(field='category', table_width_percent=33, on_click=GoToEvent(url='/')),
+                    DisplayLookup(field='created_at', table_width_percent=33, mode=DisplayMode.date)
+                ]),
+        c.Button(text='Добавить новый курс', on_click=GoToEvent(url='/course/add/')))
 
 @router.get("/course/{course_id}/add/", response_model=FastUI, response_model_exclude_none=True)
 async def draw_current_course_page(course_id: int) -> list[AnyComponent]:
