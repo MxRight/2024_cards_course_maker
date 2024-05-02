@@ -56,6 +56,15 @@ addcourse = create_page(
     ),
 )
 
+# addcard = create_page(
+#     go_back,
+#     c.Heading(text='Создать новый курс', level=2),
+#     c.ModelForm(
+#         model=CourseSchemaIn,
+#         submit_url='/api/course/add',
+#     ),
+# )
+
 activecourses = create_page(
 
 )

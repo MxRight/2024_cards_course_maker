@@ -18,6 +18,8 @@ from src.pages.pages import zeropage
 from src.config import settings
 from src.pages.pages import create_page
 from src.pages.pages import zeropage
+from src.cards.schemas import CardsSchemaIn
+from src.pages.pages import go_back
 
 router = APIRouter(prefix='/api')
 
@@ -50,6 +52,7 @@ def draw_add_new_course_page() -> list[AnyComponent]:
 async def draw_courses_page() -> list[AnyComponent]:
     bd = await lists_of_course()
     return create_page(
+        go_back,
         c.Heading(text='Доступные курсы', level=2),
         c.Table(data=bd,
                 columns=[
@@ -64,18 +67,34 @@ async def draw_courses_page() -> list[AnyComponent]:
         c.Button(text='Добавить новый курс', on_click=GoToEvent(url='/course/add/')))
 
 
-@router.get("/course/{id}/", response_model=FastUI, response_model_exclude_none=True)
-async def draw_current_course_page(id: int) -> list[AnyComponent]:
-    course = await AsyncORM.select_one(CoursesOrm, id)
+@router.get("/course/{course_id}/add/", response_model=FastUI, response_model_exclude_none=True)
+async def draw_current_course_page(course_id: int) -> list[AnyComponent]:
+    course = await AsyncORM.select_one(CoursesOrm, course_id)
     if course is not None:
-        return create_page(c.Heading(text=course.name, level=2),
+        return create_page(
+            go_back,
+            c.Heading(text=f'Добавить карточку в курс: "{course.name}"', level=2),
+                           c.ModelForm(
+                               model=CardsSchemaIn,
+                               submit_url=f'/api/cards/{course_id}/add/',
+                           ))
+@router.get("/course/{course_id}/", response_model=FastUI, response_model_exclude_none=True)
+async def draw_current_course_page(course_id: int) -> list[AnyComponent]:
+    course = await AsyncORM.select_one(CoursesOrm, course_id)
+    if course is not None:
+        return create_page(
+            go_back,
+            c.Heading(text=f'Курс "{course.name}":', level=2),
                            c.Heading(text=course.descr, level=4),
                            c.Image(src=course.img if course.img is not None else settings.logo_src,
                                    alt=course.name, width=150),
                            c.Heading(text=' ', level=6),
-                           c.Button(text='Начать занятие', on_click=GoToEvent(url='/course/add/')),
+                           c.Button(text='Начать занятие', on_click=GoToEvent(url='/course/begin/')),
                            c.Text(text=' '),
-                           c.Button(text='Редактировать курс', on_click=GoToEvent(url='/course/add/')))
+                           c.Button(text='Добавить карточку', on_click=GoToEvent(url=f'/course/{course_id}/add/')),
+                            c.Text(text=' '),
+                            c.Button(text='Редактировать курс', on_click=GoToEvent(url=f'/course/{course_id}/edit/'))
+                           )
     else:
         return zeropage
 
