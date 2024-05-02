@@ -51,14 +51,23 @@ addcourse = create_page(
     go_back,
     c.Heading(text='Создать новый курс', level=2),
     c.ModelForm(
-        # extra='allow',
         model=CourseSchemaIn,
         submit_url='/api/course/add',
-        # value='add'
-        # display_mode='page',
-        # title='Создать новый курс'
     ),
 )
+
+activecourses = create_page(
+
+)
+
+# editcourse = create_page(
+#     go_back,
+#     c.Heading(text=f'Редактировать курс: {}', level=2),
+#     c.ModelForm(
+#         model=CourseSchemaIn,
+#         submit_url='/api/course/add',
+#     ),
+# )
 
 helppage = create_page(
     go_back,

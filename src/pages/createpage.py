@@ -44,28 +44,13 @@ def create_page(*components: AnyComponent, title: str | None = None) -> list[Any
     ]
 
 
-# async def create_table(tablename, prefix:str, fields, alowed) -> AnyComponent:
-#     """
-#
-#     :param tablename: название базы данных
-#     :param prefix: префикс для создания индивидуальной ссылки конкретного объекта
-#     :param fields: все поля модели
-#     :param alowed: поля модели которые можно показывать на сайте
-#     :return:
-#     """
-#     return c.Table(
-#             data=tablename,
-#             columns=[
-#                 DisplayLookup(field=title, on_click=GoToEvent(url=f'{prefix}/{1}/')) #!!! ссылки
-#                 for title in fields.__dict__.items() #if title in alowed.model_fields
-#             ]
-#         )
+
 
 async def create_table(tablename, prefix: str, fields, alowed) -> AnyComponent:
     return c.Table(
         data=tablename,
         columns=[
-            DisplayLookup(field=title, on_click=GoToEvent(url=f'{prefix}/{1}/'))  # !!! ссылки
+            DisplayLookup(field=title, on_click=GoToEvent(url=f'{prefix}'+'/{id}/'))
             for title in fields.__dict__.items()  # if title in alowed.model_fields
         ]
     )

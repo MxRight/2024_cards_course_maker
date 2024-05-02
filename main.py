@@ -1,22 +1,18 @@
 from typing import Annotated
-from functools import cache
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
-from fastui import FastUI, AnyComponent, prebuilt_html, components as c
-from fastui.components.display import DisplayLookup, DisplayMode
+from fastui import prebuilt_html, components as c
 
 from fastui.events import GoToEvent
 from fastui.forms import fastui_form
-from src.pages.pages import mainpage, helppage, addcourse
-from src.users.router import router as users_router
-from src.courses.router import router as courses_router
+from src.api.users import router as users_router
+from src.api.courses import router as courses_router
 from src.orm.orm import AsyncORM
 from src.courses.models import CoursesOrm
 
-from src.courses.schemas import CourseSchema, CourseSchemaIn, CourseFilterForm
+from src.courses.schemas import CourseSchemaIn
 from src.fastui_router import router as fastui_router
-from src.config import settings
 
 origins = [
     "http://127.0.0.1:5173",

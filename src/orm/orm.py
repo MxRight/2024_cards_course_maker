@@ -28,10 +28,11 @@ class AsyncORM:
         async with async_session_factory() as session:
             if active == 'all':
                 query = select(model).filter(model.name.like(f'%{search}%')).order_by(-model.id)
-                #order_by -1 от нового к старому
+                # order_by -1 от нового к старому
 
             else:
-                query = select(model).filter(model.name.like(f'%{search}%')).where(model.active == active).order_by(-model.id)
+                query = select(model).filter(model.name.like(f'%{search}%')).where(model.active == active).order_by(
+                    -model.id)
             result = await session.execute(query)
             data = result.scalars().all()
             return list(data)
@@ -40,10 +41,10 @@ class AsyncORM:
     async def select_data_by_category(model, search='', active='all'):
         async with async_session_factory() as session:
             if active == 'all':
-                query = select(model).where(model.category==search).order_by(-model.id)
+                query = select(model).where(model.category == search).order_by(-model.id)
 
             else:
-                query = select(model).where(model.category==search).where(model.active == active).order_by(
+                query = select(model).where(model.category == search).where(model.active == active).order_by(
                     -model.id)
             result = await session.execute(query)
             data = result.scalars().all()
@@ -53,6 +54,14 @@ class AsyncORM:
     async def select_one(model, record_id: int):
         async with async_session_factory() as session:
             return await session.get(model, record_id)
+
+    @staticmethod
+    async def select_cards(course_id: int, model=CardsOrm):
+        async with async_session_factory() as session:
+            query = select(model).where(model.course_id == course_id).order_by(-model.id)
+            result = await session.execute(query)
+            data = result.scalars().all()
+            return list(data)
 
     #
     # @staticmethod

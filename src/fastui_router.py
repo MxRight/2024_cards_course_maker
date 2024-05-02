@@ -27,7 +27,6 @@ async def lists_of_course(search: str = '', search_in=True):
     return [CourseSchema(**i.to_dict()) for i in res]
 
 
-@cache
 async def lists_of_course_by_cat(search: str = '', search_in='all'):
     res = await AsyncORM.select_data_by_category(CoursesOrm, search, search_in)
     return [CourseSchema(**i.to_dict()) for i in res]
@@ -42,11 +41,14 @@ def draw_main_page() -> list[AnyComponent]:
 def draw_add_new_course_page() -> list[AnyComponent]:
     return addcourse
 
+# @router.get("/course/edit/", response_model=FastUI, response_model_exclude_none=True)
+# def draw_edit_course_page() -> list[AnyComponent]:
+#     return addcourse
+
 
 @router.get("/courses/", response_model=FastUI, response_model_exclude_none=True)
 async def draw_courses_page() -> list[AnyComponent]:
     bd = await lists_of_course()
-    print(bd)
     return create_page(
         c.Heading(text='Доступные курсы', level=2),
         c.Table(data=bd,
