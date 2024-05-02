@@ -5,7 +5,7 @@ from fastapi import FastAPI, APIRouter
 from fastapi.responses import HTMLResponse
 from fastui import FastUI, AnyComponent, prebuilt_html, components as c
 from fastui.components.display import DisplayLookup, DisplayMode
-
+from datetime import datetime
 from fastui.events import GoToEvent
 
 from src.pages.pages import mainpage, helppage, addcourse
@@ -21,10 +21,11 @@ from src.pages.pages import zeropage
 from src.cards.schemas import CardsSchemaIn
 from src.pages.pages import go_back
 
+
 router = APIRouter(prefix='/api')
 
 
-async def lists_of_course(search: str = '', search_in=True):
+async def lists_of_course(search: str = '', search_in='all'):
     res = await AsyncORM.select_data(CoursesOrm, search, search_in)
     return [CourseSchema(**i.to_dict()) for i in res]
 
@@ -86,11 +87,14 @@ async def draw_current_course_page(course_id: int) -> list[AnyComponent]:
             go_back,
             c.Heading(text=f'Курс "{course.name}":', level=2),
                            c.Heading(text=course.descr, level=4),
+                            c.Heading(text=f'Состоит из {course.cards} карточек. Создатель курса: {course.user_admin}. Создан: {course.created_at.date()}.', level=6),
                            c.Image(src=course.img if course.img is not None else settings.logo_src,
                                    alt=course.name, width=150),
                            c.Heading(text=' ', level=6),
                            c.Button(text='Начать занятие', on_click=GoToEvent(url='/course/begin/')),
                            c.Text(text=' '),
+                            c.Button(text='Просмотреть карточки', on_click=GoToEvent(url=f'/course/{course_id}/cards/')),
+                            c.Text(text=' '),
                            c.Button(text='Добавить карточку', on_click=GoToEvent(url=f'/course/{course_id}/add/')),
                             c.Text(text=' '),
                             c.Button(text='Редактировать курс', on_click=GoToEvent(url=f'/course/{course_id}/edit/'))

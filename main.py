@@ -49,13 +49,16 @@ async def add_course(form: Annotated[CourseSchemaIn, fastui_form(CourseSchemaIn)
     return [c.FireEvent(event=GoToEvent(url='/courses/'))]
 
 @app.post("/api/cards/{course_id}/add/")
-async def add_card(course_id: int, form: Annotated[CardsSchemaIn, fastui_form(CardsSchemaIn2)]):
-    form['course_id'] = course_id
-    form['id'] = temp_admin
-    print(form)
-    await AsyncORM.insert_data(CardsOrm, form)
+async def add_card(course_id: int, form: Annotated[CardsSchemaIn, fastui_form(CardsSchemaIn)]):
+    print('РАСПЕЧАТКА: ', form, type(form))
+
+    add_dict = {'course_id': course_id, 'user_admin': temp_admin}
+    add_dict.update(form.dict())
+    updated_form = CardsSchemaIn2(**add_dict)
+    print('РАСПЕЧАТКА: ', updated_form, type(updated_form))
+    await AsyncORM.insert_data(CardsOrm, updated_form)
     #добавить в курсе +1 к количеству карточек (или пересчитать их позже?)
-    return [c.FireEvent(event=GoToEvent(url=f'/course/{course_id}'))]
+    return [c.FireEvent(event=GoToEvent(url=f'/course/{course_id}/'))]
 
 
 @app.get('/{path:path}')

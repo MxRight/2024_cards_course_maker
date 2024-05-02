@@ -21,26 +21,10 @@ mainpage = create_page(
 
             c.Markdown(
                 text=(
-                    'This is a simple unstyled list of links, '
-                    'LinkList is also used in `Navbar` and `Pagination`.'
+                    'Ваши `прогресс` и `избранное`:'
                 )
             ),
-            c.LinkList(
-                links=[
-                    c.Link(
-                        components=[c.Text(text='Internal Link - the the home page')],
-                        on_click=GoToEvent(url='/'),
-                    ),
-                    c.Link(
-                        components=[c.Text(text='Pydantic (External link)')],
-                        on_click=GoToEvent(url='https://pydantic.dev'),
-                    ),
-                    c.Link(
-                        components=[c.Text(text='FastUI repo (New tab)')],
-                        on_click=GoToEvent(url='https://github.com/pydantic/FastUI', target='_blank'),
-                    ),
-                ],
-            ),
+
         ],
         class_name='border mt-5 pt-1 shadow-lg p-3 mb-5 bg-body rounded',
     ),
@@ -52,7 +36,7 @@ addcourse = create_page(
     c.Heading(text='Создать новый курс', level=2),
     c.ModelForm(
         model=CourseSchemaIn,
-        submit_url='/api/course/add',
+        submit_url='/api/course/add/',
     ),
 )
 
