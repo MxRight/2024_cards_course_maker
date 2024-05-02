@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field, EmailStr, SecretStr
-from src.courses.models import CourseCategory
-from src.courses.dbmodel import UserCategory
+from src.courses.models import UserCategory
 
 class UserSchemaIn(BaseModel):
     name: str

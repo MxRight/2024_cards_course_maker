@@ -4,7 +4,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from src.config import settings
 from alembic import context
-from src.courses.dbmodel import CoursesOrm
+from src.courses.models import CoursesOrm
 from src.db.database import Base
 
 config = context.config

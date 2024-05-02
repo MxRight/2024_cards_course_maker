@@ -1,6 +1,6 @@
 from sqlalchemy import select, delete
 from src.db.database import Base, async_engine, async_session_factory
-from src.courses.dbmodel import CoursesOrm, UserOrm, CardsOrm
+from src.courses.models import CoursesOrm, UserOrm, CardsOrm
 from src.courses.schemas import CourseSchema
 from src.users.schemas import UserSchemaIn, UserSchemaOut
 
@@ -18,7 +18,7 @@ class AsyncORM:
             # return UserSchemaOut(**insert.model_dump())
 
     @staticmethod
-    async def select_data(model, search='', search_in_field='title', active='all'):
+    async def select_data(model, search='', active='all'):
         """
         :param search: строка для поиска в выборке, чувствительна к регистру
         :param model:
@@ -32,6 +32,19 @@ class AsyncORM:
 
             else:
                 query = select(model).filter(model.name.like(f'%{search}%')).where(model.active == active).order_by(-model.id)
+            result = await session.execute(query)
+            data = result.scalars().all()
+            return list(data)
+
+    @staticmethod
+    async def select_data_by_category(model, search='', active='all'):
+        async with async_session_factory() as session:
+            if active == 'all':
+                query = select(model).where(model.category==search).order_by(-model.id)
+
+            else:
+                query = select(model).where(model.category==search).where(model.active == active).order_by(
+                    -model.id)
             result = await session.execute(query)
             data = result.scalars().all()
             return list(data)

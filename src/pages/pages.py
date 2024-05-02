@@ -5,11 +5,9 @@ from src.pages.createpage import create_page, create_table
 from src.users.schemas import UserSchemaIn, UserSchemaOut
 from src.users.models import User
 from src.config import settings
-from src.courses.models import AddCourse, Course
-from src.courses.demo_bd import courses
 from src.courses.schemas import CourseSchema
 from src.orm.orm import AsyncORM
-from src.courses.dbmodel import CoursesOrm
+from src.courses.models import CoursesOrm
 from src.courses.schemas import CourseSchema
 from src.courses.schemas import CourseSchemaIn
 
