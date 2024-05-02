@@ -10,7 +10,7 @@ class Settings(BaseSettings):
 
     page_title: str = 'Карточки - конструктор курсов'
     logo_src: str = 'https://starove.ru/wp-content/uploads/2019/05/az-03.jpg'
-    footer_text: str = 'Карточки - конструктор курсов для запоминания и обучения, Нечушкин Максим, 2024 год'
+    footer_text: str = 'Карточки - конструктор курсов для запоминания и обучения, Максим Н.Л., 2024 год'
     help_page_text: str = '??? please write here :)'
 
     @property
