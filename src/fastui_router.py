@@ -7,20 +7,17 @@ from fastui import FastUI, AnyComponent, prebuilt_html, components as c
 from fastui.components.display import DisplayLookup, DisplayMode
 from datetime import datetime
 from fastui.events import GoToEvent
-
 from src.pages.pages import mainpage, helppage, addcourse
-
 from src.orm.orm import AsyncORM
 from src.courses.models import CoursesOrm
 from src.pages.pages import create_page
 from src.courses.schemas import CourseSchema, CourseSchemaIn, CourseFilterForm
-from src.pages.pages import zeropage
 from src.config import settings
 from src.pages.pages import create_page
 from src.pages.pages import zeropage
 from src.cards.schemas import CardsSchemaIn, CardsSchema
 from src.pages.pages import go_back
-from src.courses.models import CardsOrm
+from src.cards.models import CardsOrm
 
 
 router = APIRouter(prefix='/api')

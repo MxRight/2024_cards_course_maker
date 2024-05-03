@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status
 from src.orm.orm import AsyncORM
-from src.courses.models import CardsOrm
+from src.cards.models import CardsOrm
 from src.cards.schemas import CardsSchemaIn
 
 router = APIRouter(tags=["Карточки"], prefix='/api/cards')

@@ -1,8 +1,7 @@
 from fastapi import APIRouter, status
 from src.orm.orm import AsyncORM
-from src.users.schemas import UserSchemaOut, UserSchemaIn
-from src.courses.schemas import CourseSchema, CourseSchemaIn
-from src.courses.models import UserOrm, CoursesOrm
+from src.courses.schemas import CourseSchemaIn
+from src.courses.models import CoursesOrm
 
 router = APIRouter(tags=["Курсы"], prefix='/api/courses')
 

@@ -1,8 +1,8 @@
-from sqlalchemy import select, delete
-from src.db.database import Base, async_engine, async_session_factory
-from src.courses.models import CoursesOrm, UserOrm, CardsOrm
-from src.courses.schemas import CourseSchema
-from src.users.schemas import UserSchemaIn, UserSchemaOut
+from sqlalchemy import select
+from src.db.database import async_session_factory
+from src.courses.models import CoursesOrm
+from src.cards.models import CardsOrm
+from src.auth.models import UserOrm
 
 
 class AsyncORM:

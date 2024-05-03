@@ -1,14 +1,7 @@
-from fastui import FastUI, AnyComponent, prebuilt_html, components as c
-from fastui.components.display import DisplayMode, DisplayLookup
+from fastui import components as c
 from fastui.events import GoToEvent, BackEvent
-from src.pages.createpage import create_page, create_table
-from src.users.schemas import UserSchemaIn, UserSchemaOut
-from src.users.models import User
+from src.pages.createpage import create_page
 from src.config import settings
-from src.courses.schemas import CourseSchema
-from src.orm.orm import AsyncORM
-from src.courses.models import CoursesOrm
-from src.courses.schemas import CourseSchema
 from src.courses.schemas import CourseSchemaIn
 
 go_back = c.Link(components=[c.Text(text='Назад')], on_click=BackEvent())

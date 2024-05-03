@@ -10,7 +10,8 @@ from src.api.users import router as users_router
 from src.api.courses import router as courses_router
 from src.api.cards import router as cards_router
 from src.orm.orm import AsyncORM
-from src.courses.models import CoursesOrm, CardsOrm
+from src.courses.models import CoursesOrm
+from src.cards.models import CardsOrm
 
 from src.courses.schemas import CourseSchemaIn
 from src.fastui_router import router as fastui_router
