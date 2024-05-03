@@ -15,7 +15,7 @@ from src.courses.models import Base
 """
 
 
-class UserOrm(SQLAlchemyBaseUserTable[int], Base, SerializerMixin):
+class UserOrm(Base, SQLAlchemyBaseUserTable[int], SerializerMixin):
     __tablename__ = 'users'
 
     name: Mapped[str] = mapped_column(nullable=False)

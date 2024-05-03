@@ -18,7 +18,7 @@ from src.pages.pages import zeropage
 from src.cards.schemas import CardsSchemaIn, CardsSchema
 from src.pages.pages import go_back
 from src.cards.models import CardsOrm
-
+from src.db.database import get_async_session
 
 router = APIRouter(prefix='/api')
 
@@ -62,8 +62,8 @@ async def draw_courses_page() -> list[AnyComponent]:
                     DisplayLookup(field='name', table_width_percent=33, on_click=GoToEvent(url='/course/{id}/')),
                     DisplayLookup(field='descr', table_width_percent=33),
                     DisplayLookup(field='cards', table_width_percent=33),
-                    DisplayLookup(field='active', table_width_percent=33),
-                    DisplayLookup(field='user_admin', table_width_percent=33),
+                    DisplayLookup(field='is_active', table_width_percent=33),
+                    DisplayLookup(field='creator_name', table_width_percent=33),
                     DisplayLookup(field='category', table_width_percent=33, on_click=GoToEvent(url='/')),
                     DisplayLookup(field='created_at', table_width_percent=33, mode=DisplayMode.date)
                 ]),

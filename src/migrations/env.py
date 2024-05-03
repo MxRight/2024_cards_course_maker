@@ -5,6 +5,7 @@ from sqlalchemy import pool
 from src.config import settings
 from alembic import context
 from src.courses.models import CoursesOrm
+from src.auth.models import UserOrm
 from src.db.database import Base
 
 config = context.config

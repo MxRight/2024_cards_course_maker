@@ -1,8 +1,16 @@
+from typing import AsyncGenerator
+
+from fastapi import Depends
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from src.db.database import async_session_factory
 from src.courses.models import CoursesOrm
 from src.cards.models import CardsOrm
 from src.auth.models import UserOrm
+
+
+
 
 
 class AsyncORM:
@@ -31,7 +39,7 @@ class AsyncORM:
                 # order_by -1 от нового к старому
 
             else:
-                query = select(model).filter(model.name.like(f'%{search}%')).where(model.active == active).order_by(
+                query = select(model).filter(model.name.like(f'%{search}%')).where(model.is_active == active).order_by(
                     -model.id)
             result = await session.execute(query)
             data = result.scalars().all()
@@ -44,7 +52,7 @@ class AsyncORM:
                 query = select(model).where(model.category == search).order_by(-model.id)
 
             else:
-                query = select(model).where(model.category == search).where(model.active == active).order_by(
+                query = select(model).where(model.category == search).where(model.is_active == active).order_by(
                     -model.id)
             result = await session.execute(query)
             data = result.scalars().all()
@@ -54,6 +62,10 @@ class AsyncORM:
     async def select_one(model, record_id: int):
         async with async_session_factory() as session:
             return await session.get(model, record_id)
+
+    # @staticmethod
+    # async def select_one(session: AsyncSession, model, record_id: int):
+    #     return await session.get(model, record_id)
 
     @staticmethod
     async def select_cards(course_id: int, model=CardsOrm):
