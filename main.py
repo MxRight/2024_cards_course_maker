@@ -9,13 +9,25 @@ from fastui.forms import fastui_form
 from src.api.users import router as users_router
 from src.api.courses import router as courses_router
 from src.api.cards import router as cards_router
+from src.auth.auth import auth_backend
+from src.auth.manager import get_user_manager
+from src.auth.schemas import UserSchemaRead, UserSchemaCreate
 from src.orm.orm import AsyncORM
 from src.courses.models import CoursesOrm
 from src.cards.models import CardsOrm
-
 from src.courses.schemas import CourseSchemaIn
 from src.fastui_router import router as fastui_router
 from src.cards.schemas import CardsSchemaIn, CardsSchemaIn2
+from fastapi_users import FastAPIUsers
+from src.auth.models import UserOrm
+
+fastapi_users = FastAPIUsers[UserOrm, int](
+    get_user_manager,
+    [auth_backend],
+)
+
+
+
 
 temp_admin = 1
 # временное id админа, после добавления авторизации брать оттуда
@@ -41,6 +53,17 @@ app.include_router(cards_router)
 
 app.include_router(fastui_router)
 
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix="/auth/jwt",
+    tags=["auth"],
+)
+
+app.include_router(
+    fastapi_users.get_register_router(UserSchemaRead, UserSchemaCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
 
 
 

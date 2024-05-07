@@ -1,9 +1,11 @@
-from fastapi_users.db import SQLAlchemyUserDatabase, SQLAlchemyBaseUserTable
+# from fastapi_users.db import SQLAlchemyUserDatabase, SQLAlchemyBaseUserTable
+from fastapi_users_db_sqlalchemy import SQLAlchemyBaseUserTable
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String, Boolean
 from sqlalchemy_serializer import SerializerMixin
 
-from src.courses.models import Base
+from src.db.base import Base
+
 
 """
 Необходимо реализовать:
@@ -15,7 +17,20 @@ from src.courses.models import Base
 """
 
 
-class UserOrm(Base, SQLAlchemyBaseUserTable[int], SerializerMixin):
+class UserProgress:
+    courses: Mapped[dict]
+    courses_time: Mapped[dict]
+    """
+    словарь в котором ключи - id курсов проходимые пользователем, 
+    значения - словарь в котором ключи - id карточек, значения - цифра, 
+    сколько раз надо повторить карточку, при неудачной попытке прибавляется например 3
+    если значене 0, то карточка считается выученной,
+    стоит ли добавить дату, и со временем прибавлять к значениям карточек еденицы для повторения?
+    courses = {1:{1:5, 2:0, 3:1}}
+    """
+
+
+class UserOrm(SQLAlchemyBaseUserTable[int], Base, SerializerMixin):
     __tablename__ = 'users'
 
     name: Mapped[str] = mapped_column(nullable=False)
@@ -31,16 +46,4 @@ class UserOrm(Base, SQLAlchemyBaseUserTable[int], SerializerMixin):
     is_verified: Mapped[bool] = mapped_column(
         Boolean, default=False, nullable=False
     )
-
-
-class UserProgress:
-    courses: dict
-    courses_time: dict
-    """
-    словарь в котором ключи - id курсов проходимые пользователем, 
-    значения - словарь в котором ключи - id карточек, значения - цифра, 
-    сколько раз надо повторить карточку, при неудачной попытке прибавляется например 3
-    если значене 0, то карточка считается выученной,
-    стоит ли добавить дату, и со временем прибавлять к значениям карточек еденицы для повторения?
-    courses = {1:{1:5, 2:0, 3:1}}
-    """
+    # user_progress: Mapped[UserProgress]

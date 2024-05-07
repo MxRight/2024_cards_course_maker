@@ -10,7 +10,8 @@ class Settings(BaseSettings):
     FOOTER_NAME: str
     TELEGRAM_URL: str
     GITHUB_URL: str
-    SECRET:str
+    SECRET: str
+    SECRET2: str
 
     page_title: str = 'Карточки - конструктор курсов'
     logo_src: str = 'https://starove.ru/wp-content/uploads/2019/05/az-03.jpg'

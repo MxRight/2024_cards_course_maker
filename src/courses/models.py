@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import ForeignKey
-from src.db.database import Base
+from src.db.base import Base
 from enum import Enum
 from sqlalchemy_serializer import SerializerMixin
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, status
 from src.orm.orm import AsyncORM
-from src.auth.schemas import UserSchemaIn
+from src.auth.schemas import UserSchemaRead
 from src.auth.models import UserOrm
 
 router = APIRouter(tags=["Пользователи"], prefix='/api/users')
@@ -8,7 +8,7 @@ router = APIRouter(tags=["Пользователи"], prefix='/api/users')
 
 
 @router.post("/add/", status_code=status.HTTP_201_CREATED)
-async def add_new_user(user: UserSchemaIn):
+async def add_new_user(user: UserSchemaRead):
     new_user = AsyncORM.insert_data(UserOrm, user)
     return await new_user
 
